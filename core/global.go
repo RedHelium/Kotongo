@@ -1,7 +1,7 @@
 package core
 
 import (
-	"kotongo/math"
+	"kotongo/core/extensions"
 	"kotongo/shaders"
 	"kotongo/shapes"
 	"log"
@@ -9,10 +9,9 @@ import (
 
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
-	"github.com/go-gl/mathgl/mgl32"
 )
 
-func InitWindow(width, height int, title string, backgroundColor math.Color) {
+func InitWindow(width, height int, title string, backgroundColor *extensions.Color) {
 
 	runtime.LockOSThread()
 
@@ -21,9 +20,12 @@ func InitWindow(width, height int, title string, backgroundColor math.Color) {
 
 	program := initOpenGL(backgroundColor)
 
-	sh := shapes.Create(shapes.TrianglePoints, mgl32.Vec3{0, 0}, mgl32.Vec3{.4, .4})
+	//TODO Init started shapes
+	sh := shapes.CreateSquare()
+	//sh2 := shapes.Create(shapes.IsoscelesTrianglePoints)
 	shapes := []*shapes.Shape{}
 	shapes = append(shapes, sh)
+	//shapes = append(shapes, sh2)
 
 	for !window.ShouldClose() {
 		Draw(window, program, shapes)
@@ -50,7 +52,7 @@ func initGlfw(width, height int, title string) *glfw.Window {
 	return window
 }
 
-func initOpenGL(backgroundColor math.Color) uint32 {
+func initOpenGL(backgroundColor *extensions.Color) uint32 {
 	if err := gl.Init(); err != nil {
 		panic(err)
 	}
