@@ -2,7 +2,7 @@ package main
 
 import (
 	"kotongo/core"
-	"kotongo/core/extensions"
+	"kotongo/extensions"
 )
 
 func main() {
