@@ -25,6 +25,24 @@ var (
 		-0.1, -0.1, 0, // left
 		0.1, -0.1, 0, // right
 	}
+	RightTrianglePoints = []float32{
+		0, 0.1, 0, // top
+		0, 0, 0, // left
+		0.1, 0, 0, // right
+
+	}
+	RectanglePoints = components.Polygon{
+		Vertices: []float32{
+			0.1, 0.1, 0, //top right
+			0.1, 0, 0, //bottom right
+			0, 0, 0, //bottom left
+			0, 0.1, 0, //top left
+		},
+		Indices: []uint32{
+			0, 1, 3, //first triangle
+			1, 2, 3, //second triangle
+		},
+	}
 )
 
 // TODO Disconnect VAO (glBindVertexArray(0);)
@@ -38,6 +56,10 @@ func VAO(renderers ...components.Renderer) uint32 {
 
 	for _, obj := range renderers {
 		obj.VBO()
+
+		if len(obj.Indices) > 1 {
+			obj.EBO()
+		}
 	}
 
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, nil)
