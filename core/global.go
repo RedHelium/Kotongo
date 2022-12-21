@@ -2,18 +2,18 @@ package core
 
 import (
 	"kotongo/components"
-	"kotongo/extensions"
 	"kotongo/graphics"
 	"kotongo/shaders"
 	"log"
 	"runtime"
 
+	"github.com/RedHelium/toolz"
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
 )
 
 // TODO Transfer app struct in arg
-func InitWindow(width, height int, title string, backgroundColor *extensions.Color) {
+func InitWindow(width, height int, title string, backgroundColor *toolz.Color) {
 
 	runtime.LockOSThread()
 
@@ -72,7 +72,7 @@ func attachShaders(program uint32, shaders ...uint32) {
 }
 
 // Draw graphics
-func Draw(window *glfw.Window, program uint32, backgroundColor *extensions.Color) {
+func Draw(window *glfw.Window, program uint32, backgroundColor *toolz.Color) {
 
 	gl.ClearColor(backgroundColor.R, backgroundColor.G, backgroundColor.B, backgroundColor.A)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
