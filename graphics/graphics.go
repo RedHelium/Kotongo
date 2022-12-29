@@ -65,5 +65,9 @@ func VAO(renderers ...components.Renderer) uint32 {
 	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, nil)
 	gl.EnableVertexAttribArray(0)
 
+	for _, obj := range renderers {
+		obj.Draw()
+	}
+
 	return vao
 }

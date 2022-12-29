@@ -76,19 +76,19 @@ func Draw(window *glfw.Window, program uint32, backgroundColor *toolz.Color) {
 
 	gl.ClearColor(backgroundColor.R, backgroundColor.G, backgroundColor.B, backgroundColor.A)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
 	gl.UseProgram(program)
 
 	//TODO THIS IS TEST!!! REFACT!!!
 	r := components.Renderer{
 		DrawType: gl.STATIC_DRAW,
+		Mode:     gl.TRIANGLES,
+		Xtype:    gl.UNSIGNED_INT,
 		Vertices: graphics.RectanglePoints.Vertices,
 		Indices:  graphics.RectanglePoints.Indices,
 	}
 
 	gl.BindVertexArray(graphics.VAO(r))
-	gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
-	//gl.DrawArrays(gl.TRIANGLES, 0, 3)
-	gl.BindVertexArray(0) //TODO No need un-bind every time
 
 	//XXX This is change draw type geometry. For debuggin, we can use wireframe mode (gl.LINE)
 	gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)

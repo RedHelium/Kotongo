@@ -9,10 +9,11 @@ import (
 
 // Application data
 type App struct {
-	width   int
-	height  int
-	title   string
-	shaders []shaderInfo // List of shaders for this program
+	width      int
+	height     int
+	title      string
+	fullscreen bool
+	shaders    []shaderInfo // List of shaders for this program
 }
 
 // Shader data
@@ -23,9 +24,15 @@ type shaderInfo struct {
 
 // Global object data
 type Entity struct {
-	name      string
-	renderer  Renderer
-	transform Transform
+	Name      string
+	Renderer  Renderer
+	Transform Transform
+}
+
+// Scene data
+type Scene struct {
+	isLoaded bool
+	entities []Entity
 }
 
 // Transformation data
@@ -42,7 +49,9 @@ type Polygon struct {
 
 // Render object data
 type Renderer struct {
-	DrawType uint32 // GL_STATIC_DRAW, GL_DYNAMIC_DRAW, GL_STREAM_DRAW
+	DrawType uint32 // GL_STATIC_DRAW | GL_DYNAMIC_DRAW | GL_STREAM_DRAW
+	Mode     uint32 //GL_TRIANGLES, etc.
+	Xtype    uint32 // gl.UNSIGNED_INT, etc.
 	Vertices []float32
 	Indices  []uint32
 }
@@ -53,6 +62,18 @@ func (renderer *Renderer) GetVertices() []float32 {
 
 func (renderer *Renderer) GetDrawType() uint32 {
 	return renderer.DrawType
+}
+
+func (renderer *Renderer) Draw() {
+
+	if len(renderer.Indices) > 1 {
+		gl.DrawElements(renderer.Mode, int32(len(renderer.Indices)), renderer.Xtype, nil)
+	} else {
+		gl.DrawArrays(renderer.Mode, 0, int32(len(renderer.Vertices)/3))
+	}
+
+	gl.BindVertexArray(0) //TODO No need un-bind every time
+
 }
 
 // Create vertex buffer object
